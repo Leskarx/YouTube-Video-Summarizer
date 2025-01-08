@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
-  const apiKey = import.meta.env.VITE_YOUTUBE;
+  // const apiKey = import.meta.env.VITE_YOUTUBE;
   const [url, setUrl] = useState('');
   const navigate = useNavigate();
-  console.log('API Key.......:', apiKey);
+  // console.log('API Key.......:', apiKey);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('URL----->:', url);
+    // console.log('URL----->:', url);
     // Here you would typically make an API call to process the URL
     navigate('/summary', { state: { url } });
   };

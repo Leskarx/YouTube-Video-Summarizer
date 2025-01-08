@@ -14,13 +14,13 @@ function AuthModal({ isOpen, onClose, onLogin }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
-      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+      <div className="fixed inset-0 bg-black/70" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="w-full max-w-md rounded bg-white p-6">
           <Dialog.Title className="text-lg font-medium leading-6 text-gray-900 mb-4">
             {isSignUp ? 'Create an Account' : 'Login'}
           </Dialog.Title>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-10">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
@@ -30,7 +30,7 @@ function AuthModal({ isOpen, onClose, onLogin }) {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                className="mt-1 block w-full p-2 rounded-md border-2 border-slate-200 focus:border-primary-500 focus:ring-primary-500"
                 required
               />
             </div>
@@ -43,7 +43,7 @@ function AuthModal({ isOpen, onClose, onLogin }) {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                className="mt-1 block w-full p-2 rounded-md border-2 border-slate-200 focus:border-primary-500 focus:ring-primary-500"
                 required
               />
             </div>
