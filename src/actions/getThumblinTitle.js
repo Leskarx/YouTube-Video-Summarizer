@@ -10,7 +10,7 @@ async function getYouTubeThumbnailAndTitle(videoUrl) {
         }
 
         // Your YouTube Data API key
-        const apiKey = 'AIzaSyD3Ou-xpDkM1tFB1dagmzlygy-e1Y3sv5o';
+        const apiKey =import.meta.env.VITE_YOUTUBE;
 
         // YouTube Data API endpoint
         const apiEndpoint = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`;
