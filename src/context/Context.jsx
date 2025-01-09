@@ -4,21 +4,32 @@ import authObj from '../backendServices/auth'; // Assuming this manages authenti
 const MyContext = createContext();
 
 const MyProvider = ({ children }) => {
-  let value;
-  const token = localStorage.getItem('cookieFallback');
-  console.log('token', token);
-  if (token && token !== 'undefined' && token !== 'null' && token !== '' && token !== '[]') {
-   value=true
-  } else {
-   value=false
-  }
+  const [loading, setLoading] = useState(true);
+  const [isLogin, setIsLogin] = useState(null);
+  const [user, setUser] = useState(null);
+  // Default to null while checking login
 
-  const [isLogin, setIsLogin] = useState(value);
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const res = await authObj.getAccount();
+        setUser(res);
+        // console.log("....res.......>",res);
+        setIsLogin(!!res); // Set isLogin to true if res is truthy, else false
+      } catch (error) {
+        console.error('Error checking login status:', error);
+        setIsLogin(false); // Default to logged out on error
+      }finally{
+        setLoading(false);
+      }
+    };
 
+    checkLogin();
+  }, []); // Empty dependency array ensures this runs only on mount
 
   return (
     <MyContext.Provider value={{ isLogin, setIsLogin }}>
-      {children}
+      {loading?<p></p>:children}
     </MyContext.Provider>
   );
 };
