@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dialog } from '@headlessui/react';
 import { FiMenu, FiX } from 'react-icons/fi';
+import { FaYoutube } from "react-icons/fa";
 import AuthModal from './AuthModal';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   return (
     <nav className="bg-white shadow-lg">
@@ -21,6 +22,11 @@ function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-4">
+           <Link to="https://www.youtube.com/" target='_blank' title='Go to Youtube'>
+           <div  className='text-red-500  cursor-pointer'>
+            <FaYoutube size={45} />
+            </div>
+           </Link>
             {isLoggedIn ? (
               <>
                 <Link to="/dashboard" className="text-gray-700 hover:text-primary-600">

@@ -19,12 +19,13 @@ function Summary() {
       try {
         const { thumbnailUrl, videoTitle } = await getYouTubeThumbnailAndTitle(url);
         // const transcript = await fetchYouTubeTranscript(url);
-        const transcript = await getTranscript(url);
+        // const summary = await getTranscript(url);
+        const summary = "test"
 
         setSummary({
           title: videoTitle,
           thumbnail: thumbnailUrl,
-          summary:  "Transcript not available for this video.",
+          summary: summary|| "Transcript not available for this video.",
         });
       } catch (error) {
         console.error('Error fetching video details or transcript:', error);
@@ -65,7 +66,7 @@ function Summary() {
         <img
           src={summary.thumbnail}
           alt={summary.title}
-          className="w-full h-96 object-cover"
+          className="w-full h-96 object-cover "
         />
         <div className="p-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">{summary.title}</h1>
