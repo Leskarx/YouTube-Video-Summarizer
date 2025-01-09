@@ -4,11 +4,25 @@ import { Dialog } from '@headlessui/react';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { FaYoutube } from "react-icons/fa";
 import AuthModal from './AuthModal';
+import { MyContext } from '../context/Context';
+import { useContext } from 'react';
+import authObj from '../backendServices/auth';
 
 function Navbar() {
+  const { isLogin,setIsLogin} = useContext(MyContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(isLogin);
+  async function handleLogout() {
+   const res= await authObj.logout();
+   if(res){
+     setIsLoggedIn(false);
+     setIsLogin(false);}
+     else{
+        throw new Error("Account not found");
+     }
+   
+  }
 
   return (
     <nav className="bg-white shadow-lg">
@@ -33,7 +47,7 @@ function Navbar() {
                   My Summaries
                 </Link>
                 <button
-                  onClick={() => setIsLoggedIn(false)}
+                  onClick={handleLogout}
                   className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
                 >
                   Logout

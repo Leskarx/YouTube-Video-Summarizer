@@ -1,8 +1,11 @@
 import { Dialog } from '@headlessui/react';
 import { useState } from 'react';
 import authObj from '../backendServices/auth';
+import { useContext } from 'react';
+import { MyContext } from '../context/Context';
 
 function AuthModal({ isOpen, onClose, onLogin }) {
+  const { isLogin ,setIsLogin} = useContext(MyContext);
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,8 +38,20 @@ function AuthModal({ isOpen, onClose, onLogin }) {
     }
 
     if (!isSignUp) {
-      console.log('Login Email:', email);
-      console.log('Login Password:', password);
+      try {
+        const userAccount = await authObj.login(email.trim(), password.trim());
+        console.log('Logged in user account:', userAccount);
+        onLogin();
+        setIsLogin(true);
+      }catch (error) {
+        setPasswordError('Account not found');
+        console.log('Error logging in:', error.message);
+        setLoading(false);
+        throw new Error('Account not found');
+      }
+
+
+     
     }
 setLoading(false);
     // onClose();

@@ -10,7 +10,8 @@ import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   const { isLogin } = useContext(MyContext);
-  // console.log('isLogin:', isLogin);
+  console.log("...........>",isLogin);
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
@@ -18,7 +19,6 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
-           
             <Route
               path="/dashboard"
               element={

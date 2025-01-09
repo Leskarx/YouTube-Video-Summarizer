@@ -39,7 +39,20 @@ class AuthService{
     }
     async login(email,password){
         try {
-            const userAccount=await this.account.createSession(email,password);
+            const userAccount=await this.account.createEmailPasswordSession(email,password);
+            if(userAccount){
+                return userAccount;
+            }else{
+                throw new Error("Account not found");
+            }
+          } catch (error) {
+            throw new Error(error);
+            
+          }
+    }
+    async logout(){
+        try {
+            const userAccount=await this.account.deleteSessions();
             if(userAccount){
                 return userAccount;
             }else{
