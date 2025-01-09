@@ -1,15 +1,45 @@
 import { Dialog } from '@headlessui/react';
 import { useState } from 'react';
+import authObj from '../backendServices/auth';
 
 function AuthModal({ isOpen, onClose, onLogin }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState(''); // State for password error message
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically handle authentication
-    onLogin();
+    setLoading(true);
+
+    if (isSignUp) {
+      if (password.trim().length < 8) {
+        setPasswordError('Password must be at least 8 characters long.');
+        setLoading(false);
+        return;
+      } else {
+        setPasswordError(''); // Clear error if password is valid
+      }
+
+      try {
+        const userAccount = await authObj.createAccount(email.trim(), password.trim());
+        console.log('Created user account:', userAccount);
+      } catch (error) {
+        setPasswordError('Error creating account');
+        console.log('Error creating account:', error.message);
+        throw new Error('Account not created');
+      }finally{
+        setLoading(false);}
+
+    }
+
+    if (!isSignUp) {
+      console.log('Login Email:', email);
+      console.log('Login Password:', password);
+    }
+setLoading(false);
+    // onClose();
   };
 
   return (
@@ -20,7 +50,7 @@ function AuthModal({ isOpen, onClose, onLogin }) {
           <Dialog.Title className="text-lg font-medium leading-6 text-gray-900 mb-4">
             {isSignUp ? 'Create an Account' : 'Login'}
           </Dialog.Title>
-          <form onSubmit={handleSubmit} className="space-y-10">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
@@ -46,16 +76,27 @@ function AuthModal({ isOpen, onClose, onLogin }) {
                 className="mt-1 block w-full p-2 rounded-md border-2 border-slate-200 focus:border-primary-500 focus:ring-primary-500"
                 required
               />
+              {passwordError && (
+                <p className="mt-1 text-sm text-red-600">{passwordError}</p>
+              )}
             </div>
             <button
               type="submit"
-              className="w-full bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
+              className="w-full bg-primary-600 text-white px-4 h-12 rounded-md active:bg-primary-900 hover:bg-primary-700"
             >
-              {isSignUp ? 'Sign Up' : 'Login'}
+              {
+                loading ? <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white my-auto mx-auto"></div> :
+                
+              isSignUp ? 'Sign Up' : 'Login'
+              
+              }
             </button>
           </form>
           <button
-            onClick={() => setIsSignUp(!isSignUp)}
+            onClick={() => {
+              setIsSignUp(!isSignUp);
+              setPasswordError(''); // Clear error when toggling form
+            }}
             className="mt-4 text-sm text-primary-600 hover:text-primary-700"
           >
             {isSignUp ? 'Already have an account? Login' : "Don't have an account? Sign Up"}
