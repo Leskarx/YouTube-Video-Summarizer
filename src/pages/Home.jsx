@@ -1,19 +1,54 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import getYouTubeThumbnailAndTitle from "../actions/getThumblinTitle";
+import dataBaseObj from "../backendServices/dataBase";
+import { MyContext } from "../context/Context";
 
 function Home() {
-  // const apiKey = import.meta.env.VITE_YOUTUBE;
-  const [url, setUrl] = useState('');
-  const [onSubmit, setOnSubmit] = useState(true);
-  const navigate = useNavigate();
-  // console.log('API Key.......:', apiKey);
+  const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const { isLogin, user } = useContext(MyContext);
+  const userId = user?.["$id"];
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log('URL----->:', url);
-    // Here you would typically make an API call to process the URL
-    sessionStorage.setItem('navigatedFromHome', 'true'); // Set navigation flag
-  navigate('/summary', { state: { url } });
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { thumbnailUrl, videoTitle } = await getYouTubeThumbnailAndTitle(url);
+
+      // Mocking a summary for now
+      const summary = "This is a generated summary for the video.";
+
+      // Save to database if logged in
+      if (isLogin) {
+        console.log("User is logged in. Saving data to database...");
+        // try {
+        //   await dataBaseObj.createDocument(summary, videoTitle, thumbnailUrl, userId);
+        //   console.log("Document created successfully!");
+        // } catch (error) {
+        //   console.error("Error creating document:", error);
+        // }
+      }
+
+      // Navigate to summary page with data
+      navigate("/summary", {
+        state: {
+          thumbnail: thumbnailUrl,
+          title: videoTitle,
+          summary: summary || "Transcript not available for this video.",
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching video details or summary:", error);
+      setError("Failed to fetch video details. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,11 +71,15 @@ function Home() {
           />
           <button
             type="submit"
-            className="w-full sm:w-auto bg-primary-600 text-white px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors"
+            className={`w-full sm:w-auto bg-primary-600 text-white px-8 py-3 rounded-lg transition-colors ${
+              loading ? "cursor-not-allowed bg-gray-400" : "hover:bg-primary-700"
+            }`}
+            disabled={loading}
           >
-            Generate Summary
+            {loading ? "Generating..." : "Generate Summary"}
           </button>
         </form>
+        {error && <p className="text-red-600 mt-4">{error}</p>}
       </div>
     </div>
   );
