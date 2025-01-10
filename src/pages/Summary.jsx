@@ -1,11 +1,20 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function Summary() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  useEffect(()=>{
+    if(!state){
+      navigate("/");
+    }
+  },[state,navigate]);
+  
   const { thumbnail, title, summary } = state || {};
+  // console.log("state",state);
 
   if (!thumbnail || !title || !summary) {
+
     navigate("/"); // Redirect to Home if no data is available
     return null;
   }
