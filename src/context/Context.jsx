@@ -13,6 +13,7 @@ const MyProvider = ({ children }) => {
     const checkLogin = async () => {
       try {
         const res = await authObj.getAccount();
+
         setUser(res);
         // console.log("....res.......>",res);
         setIsLogin(!!res); // Set isLogin to true if res is truthy, else false
@@ -28,7 +29,7 @@ const MyProvider = ({ children }) => {
   }, []); // Empty dependency array ensures this runs only on mount
 
   return (
-    <MyContext.Provider value={{ isLogin, setIsLogin }}>
+    <MyContext.Provider value={{ isLogin, setIsLogin, user, setUser }}>
       {loading?<p></p>:children}
     </MyContext.Provider>
   );

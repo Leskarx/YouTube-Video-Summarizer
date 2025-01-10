@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 function Home() {
   // const apiKey = import.meta.env.VITE_YOUTUBE;
   const [url, setUrl] = useState('');
+  const [onSubmit, setOnSubmit] = useState(true);
   const navigate = useNavigate();
   // console.log('API Key.......:', apiKey);
 
@@ -11,7 +12,8 @@ function Home() {
     e.preventDefault();
     // console.log('URL----->:', url);
     // Here you would typically make an API call to process the URL
-    navigate('/summary', { state: { url } });
+    sessionStorage.setItem('navigatedFromHome', 'true'); // Set navigation flag
+  navigate('/summary', { state: { url } });
   };
 
   return (

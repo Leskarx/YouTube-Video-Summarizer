@@ -1,32 +1,52 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
+import { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import getYouTubeThumbnailAndTitle from '../actions/getThumblinTitle';
-import {getTranscript} from '../actions/getTranscript'; // Import the transcript fetching function
+import dataBaseObj from '../backendServices/dataBase';
+import { MyContext } from '../context/Context';
 
 function Summary() {
+  const { isLogin } = useContext(MyContext);
+  const { user } = useContext(MyContext);
+  const userId = user?.["$id"];
+  
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { url } = state;
+  const { url } = state || {};
 
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch video details and transcript
+    const navigated = sessionStorage.getItem('navigatedFromHome') === 'true';
+    sessionStorage.removeItem('navigatedFromHome'); // Clear flag after checking
+
+    if (!url) {
+      console.error('URL not provided. Redirecting to home...');
+      navigate('/'); // Redirect if no URL is provided
+      return;
+    }
+
     async function fetchData() {
       try {
         const { thumbnailUrl, videoTitle } = await getYouTubeThumbnailAndTitle(url);
-        // const transcript = await fetchYouTubeTranscript(url);
-        // const summary = await getTranscript(url);
-        const summary = "test"
+        const summary = "test";
 
         setSummary({
           title: videoTitle,
           thumbnail: thumbnailUrl,
-          summary: summary|| "Transcript not available for this video.",
+          summary: summary || "Transcript not available for this video.",
         });
+
+        // Run logic only if navigated from home page
+        if (isLogin && navigated) {
+          console.log("....calling function....>", navigated);
+          // try {
+          //   await dataBaseObj.createDocument(summary, videoTitle, thumbnailUrl, userId);
+          // } catch (error) {
+          //   console.error("Error in create Document", error);
+          // }
+        }
+
       } catch (error) {
         console.error('Error fetching video details or transcript:', error);
         setSummary({
@@ -40,7 +60,7 @@ function Summary() {
     }
 
     fetchData();
-  }, [url]);
+  }, [url, isLogin, navigate, userId]);
 
   if (loading) {
     return (
