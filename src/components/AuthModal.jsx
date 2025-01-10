@@ -3,8 +3,10 @@ import { useState } from 'react';
 import authObj from '../backendServices/auth';
 import { useContext } from 'react';
 import { MyContext } from '../context/Context';
+import { useNavigate } from 'react-router-dom';
 
 function AuthModal({ isOpen, onClose, onLogin }) {
+  const navigate = useNavigate();
   const { isLogin ,setIsLogin} = useContext(MyContext);
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
@@ -30,6 +32,7 @@ function AuthModal({ isOpen, onClose, onLogin }) {
         // console.log('Created user account:', userAccount);
         onLogin();
         setIsLogin(true);
+        navigate(0)
       } catch (error) {
         setPasswordError('Error creating account');
         console.log('Error creating account:', error.message);
@@ -43,8 +46,10 @@ function AuthModal({ isOpen, onClose, onLogin }) {
       try {
         const userAccount = await authObj.login(email.trim(), password.trim());
         console.log('Logged in user account:', userAccount);
+        
         onLogin();
         setIsLogin(true);
+        navigate(0)
       }catch (error) {
         setPasswordError('Account not found');
         console.log('Error logging in:', error.message);

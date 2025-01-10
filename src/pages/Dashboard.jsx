@@ -7,20 +7,19 @@ import { useNavigate } from 'react-router-dom';
 function Dashboard() {
   const navigate = useNavigate();
   const { user } = useContext(MyContext);
-  const userId = user?.["$id"];
   const [summaries, setSummaries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [hasFetched, setHasFetched] = useState(false); // Track whether data is fetched
+  const [userLoading, setUserLoading] = useState(true); // Track user context loading
 
   useEffect(() => {
-    if (!hasFetched && userId) { // Only fetch if not already fetched and userId is available
+    // Wait for user context to be available
+    if (!userLoading && user?.["$id"]) {
       async function fetchSummaries() {
         try {
-          const { documents } = await dataBaseObj.getDocuments(userId);
+          const { documents } = await dataBaseObj.getDocuments(user["$id"]);
           console.log('Documents:', documents);
           setSummaries(documents);
           setLoading(false);
-          setHasFetched(true); // Set hasFetched to true after the data is fetched
         } catch (error) {
           console.error('Error fetching summaries:', error);
           setLoading(false);
@@ -28,9 +27,15 @@ function Dashboard() {
       }
       fetchSummaries();
     }
-  }, [userId, hasFetched]); // Only run when userId or hasFetched changes
+  }, [user, userLoading]);
 
-  if (loading) {
+  useEffect(() => {
+    if (user) {
+      setUserLoading(false); // Once user is available, stop loading
+    }
+  }, [user]);
+
+  if (userLoading || loading) {
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-12rem)]">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
@@ -43,7 +48,7 @@ function Dashboard() {
       <h1 className="text-3xl font-bold text-gray-900 mb-8">My Summaries</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {
-          (summaries.length>0) ? 
+          (summaries.length > 0) ? 
           summaries.map((summary) => (
             <div
               onClick={() => {
@@ -65,7 +70,6 @@ function Dashboard() {
               />
               <div className="p-4">
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">{summary.title}</h2>
-                {/* <p className="text-gray-600 text-sm mb-4">{summary.summary}</p> */}
                 <p className="text-gray-500 text-sm">{summary.date}</p>
               </div>
             </div>
@@ -77,4 +81,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
