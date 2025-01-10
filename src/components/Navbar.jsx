@@ -1,33 +1,33 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Dialog } from '@headlessui/react';
-import { FiMenu, FiX } from 'react-icons/fi';
-import { FaYoutube } from "react-icons/fa";
-import AuthModal from './AuthModal';
-import { MyContext } from '../context/Context';
-import { useContext } from 'react';
-import authObj from '../backendServices/auth';
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import { FiMenu, FiX } from "react-icons/fi";
+import { Dialog } from "@headlessui/react";
+import { MyContext } from "../context/Context";
+import authObj from "../backendServices/auth";
+import { FaYoutube } from "react-icons/fa"; // Import YouTube icon from react-icons
 
 function Navbar() {
-  const { isLogin,setIsLogin} = useContext(MyContext);
+  const { isLogin, setIsLogin } = useContext(MyContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(isLogin);
-  async function handleLogout() {
-   const res= await authObj.logout();
-   if(res){
-     setIsLoggedIn(false);
-     setIsLogin(false);}
-     else{
-        throw new Error("Account not found");
-     }
-   
-  }
+
+  const handleLogout = async () => {
+    try {
+      const res = await authObj.logout();
+      if (res) {
+        setIsLogin(false);
+      } else {
+        throw new Error("Logout failed");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   return (
     <nav className="bg-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
+          {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="text-primary-600 text-xl font-bold">
               YouTube Summarizer
@@ -36,14 +36,21 @@ function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-4">
-           <Link to="https://www.youtube.com/" target='_blank' title='Go to Youtube'>
-           <div  className='text-red-500  cursor-pointer'>
-            <FaYoutube size={45} />
-            </div>
-           </Link>
-            {isLoggedIn ? (
+            <Link
+              to="https://www.youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-700 hover:text-primary-600 flex items-center space-x-2"
+            >
+              <FaYoutube className="text-red-600 h-5 w-5" />
+              <span>Open YouTube</span>
+            </Link>
+            {isLogin ? (
               <>
-                <Link to="/dashboard" className="text-gray-700 hover:text-primary-600">
+                <Link
+                  to="/dashboard"
+                  className="text-gray-700 hover:text-primary-600"
+                >
                   My Summaries
                 </Link>
                 <button
@@ -53,23 +60,11 @@ function Navbar() {
                   Logout
                 </button>
               </>
-            ) : (
-              <button
-                onClick={() => setIsAuthModalOpen(true)}
-                className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
-              >
-                Login / Sign Up
-              </button>
-            )}
+            ) : null}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="sm:hidden flex gap-2 items-center">
-          <Link to="https://www.youtube.com/" target='_blank' title='Go to Youtube'>
-           <div  className='text-red-500  cursor-pointer'>
-            <FaYoutube size={34} />
-            </div>
-           </Link>
+          {/* Mobile Menu Button */}
+          <div className="sm:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(true)}
               className="text-gray-700 hover:text-primary-600"
@@ -80,7 +75,7 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       <Dialog
         as="div"
         open={isMenuOpen}
@@ -98,7 +93,16 @@ function Navbar() {
             </button>
           </div>
           <div className="mt-6 flex flex-col space-y-4">
-            {isLoggedIn ? (
+            <Link
+              to="https://www.youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-700 hover:text-primary-600 flex items-center space-x-2"
+            >
+              <FaYoutube className="text-red-600 h-5 w-5" />
+              <span>Open YouTube</span>
+            </Link>
+            {isLogin ? (
               <>
                 <Link
                   to="/dashboard"
@@ -109,7 +113,7 @@ function Navbar() {
                 </Link>
                 <button
                   onClick={() => {
-                    setIsLoggedIn(false);
+                    handleLogout();
                     setIsMenuOpen(false);
                   }}
                   className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
@@ -119,10 +123,7 @@ function Navbar() {
               </>
             ) : (
               <button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setIsAuthModalOpen(true);
-                }}
+                onClick={() => setIsMenuOpen(false)}
                 className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
               >
                 Login / Sign Up
@@ -131,15 +132,6 @@ function Navbar() {
           </div>
         </div>
       </Dialog>
-
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        onLogin={() => {
-          setIsLoggedIn(true);
-          setIsAuthModalOpen(false);
-        }}
-      />
     </nav>
   );
 }
