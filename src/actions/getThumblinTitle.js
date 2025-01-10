@@ -1,4 +1,5 @@
 import axios from "axios";
+import conf from "../conf/conf";
 
 async function getYouTubeThumbnailAndTitle(videoUrl) {
     try {
@@ -10,10 +11,10 @@ async function getYouTubeThumbnailAndTitle(videoUrl) {
         }
 
         // Your YouTube Data API key
-        const apiKey =import.meta.env.VITE_YOUTUBE;
+        // const apiKey =import.meta.env.VITE_YOUTUBE;
 
         // YouTube Data API endpoint
-        const apiEndpoint = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`;
+        const apiEndpoint = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${conf.youtubeApi}&part=snippet`;
 
         // Make the API request
         const response = await axios.get(apiEndpoint);
