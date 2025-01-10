@@ -64,7 +64,12 @@ function Navbar() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="sm:hidden flex items-center">
+          <div className="sm:hidden flex gap-2 items-center">
+          <Link to="https://www.youtube.com/" target='_blank' title='Go to Youtube'>
+           <div  className='text-red-500  cursor-pointer'>
+            <FaYoutube size={34} />
+            </div>
+           </Link>
             <button
               onClick={() => setIsMenuOpen(true)}
               className="text-gray-700 hover:text-primary-600"

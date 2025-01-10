@@ -42,35 +42,39 @@ function Dashboard() {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">My Summaries</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {summaries.map((summary) => (
-          <div
-            onClick={() => {
-              navigate("/summary", {
-                state: {
-                  thumbnail: summary.url,
-                  title: summary.title,
-                  summary: summary.summary,
-                },
-              });
-            }}
-            key={summary.$id}
-            className="bg-white transition cursor-pointer hover:scale-105 rounded-lg shadow-lg overflow-hidden"
-          >
-            <img
-              src={summary.url}
-              alt={summary.title}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">{summary.title}</h2>
-              {/* <p className="text-gray-600 text-sm mb-4">{summary.summary}</p> */}
-              <p className="text-gray-500 text-sm">{summary.date}</p>
+        {
+          (summaries.length>0) ? 
+          summaries.map((summary) => (
+            <div
+              onClick={() => {
+                navigate("/summary", {
+                  state: {
+                    thumbnail: summary.url,
+                    title: summary.title,
+                    summary: summary.summary,
+                  },
+                });
+              }}
+              key={summary.$id}
+              className="bg-white transition cursor-pointer hover:scale-105 rounded-lg shadow-lg overflow-hidden"
+            >
+              <img
+                src={summary.url}
+                alt={summary.title}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">{summary.title}</h2>
+                {/* <p className="text-gray-600 text-sm mb-4">{summary.summary}</p> */}
+                <p className="text-gray-500 text-sm">{summary.date}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          )) : <p className="text-gray-600 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-1/2">No Data found</p>
+        }
       </div>
     </div>
   );
 }
 
 export default Dashboard;
+

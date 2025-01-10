@@ -3,7 +3,7 @@ import { getSummary } from './getSummary';
 
 export async function getTranscript(url) {
   // Array of API keys to try in case one fails
-  const apiKeys = [import.meta.env.VITE_RAPIDAPI_KEY, import.meta.env.VITE_RAPIDAPI_KEY_2,import.meta.env.VITE_RAPIDAPI_KEY_3];
+  const apiKeys = [import.meta.env.VITE_RAPIDAPI_KEY, import.meta.env.VITE_RAPIDAPI_KEY_2,import.meta.env.VITE_RAPIDAPI_KEY_3,import.meta.env.VITE_RAPIDAPI_KEY_4];
 
   for (let i = 0; i < apiKeys.length; i++) {
     try {

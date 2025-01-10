@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import getYouTubeThumbnailAndTitle from "../actions/getThumblinTitle";
 import dataBaseObj from "../backendServices/dataBase";
 import { MyContext } from "../context/Context";
+import { getTranscript } from "../actions/getTranscript";
 
 function Home() {
   const [url, setUrl] = useState("");
@@ -23,7 +24,7 @@ function Home() {
       const { thumbnailUrl, videoTitle } = await getYouTubeThumbnailAndTitle(url);
 
       // Mocking a summary for now
-      const summary = "This is a generated summary for the video.";
+      const summary = await getTranscript(url);
 
       // Save to database if logged in
       if (isLogin) {
