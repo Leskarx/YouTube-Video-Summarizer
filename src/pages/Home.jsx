@@ -11,9 +11,24 @@ function Home() {
   const [error, setError] = useState(null);
 
   const { isLogin, user } = useContext(MyContext);
-  const userId = user?.["$id"]
-  ;
+  const userId = user?.["$id"];
   const navigate = useNavigate();
+
+  // Utility function to convert YouTube short URL to normal URL
+  const convertYouTubeUrl = (shortUrl) => {
+    try {
+      const url = new URL(shortUrl);
+      if (url.hostname === "youtu.be") {
+        const videoId = url.pathname.substring(1); // Extract the video ID from path
+      // Keep any query parameters
+        return `https://www.youtube.com/watch?v=${videoId}`;
+      }
+      return shortUrl; // Return as-is if it's not a shortened URL
+    } catch (error) {
+      console.error("Invalid YouTube URL:", error);
+      return shortUrl; // Fallback to the original URL
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,14 +36,18 @@ function Home() {
     setError(null);
 
     try {
-      const { thumbnailUrl, videoTitle } = await getYouTubeThumbnailAndTitle(url);
+      // Convert the URL to normal YouTube format
+      const normalizedUrl = convertYouTubeUrl(url);
+
+console.log("Normalized URL:", normalizedUrl);
+      const { thumbnailUrl, videoTitle } = await getYouTubeThumbnailAndTitle(normalizedUrl);
 
       // Mocking a summary for now
-      const summary = await getTranscript(url);
+      const summary = await getTranscript(normalizedUrl);
 
       // Save to database if logged in
       if (isLogin) {
-        console.log("User is logged in. Saving data to database...",userId);
+        console.log("User is logged in. Saving data to database...", userId);
         try {
           await dataBaseObj.createDocument(summary, videoTitle, thumbnailUrl, userId);
           console.log("Document created successfully!");
