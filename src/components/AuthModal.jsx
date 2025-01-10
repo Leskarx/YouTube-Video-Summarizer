@@ -32,6 +32,7 @@ function AuthModal({ isOpen, onClose, onLogin }) {
         // console.log('Created user account:', userAccount);
         onLogin();
         setIsLogin(true);
+        navigate("/")
         navigate(0)
       } catch (error) {
         setPasswordError('Error creating account');
@@ -49,6 +50,7 @@ function AuthModal({ isOpen, onClose, onLogin }) {
         
         onLogin();
         setIsLogin(true);
+        navigate("/")
         navigate(0)
       }catch (error) {
         setPasswordError('Account not found');
