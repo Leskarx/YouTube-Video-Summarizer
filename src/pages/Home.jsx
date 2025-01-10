@@ -10,7 +10,8 @@ function Home() {
   const [error, setError] = useState(null);
 
   const { isLogin, user } = useContext(MyContext);
-  const userId = user?.["$id"];
+  const userId = user?.["$id"]
+  ;
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -26,13 +27,13 @@ function Home() {
 
       // Save to database if logged in
       if (isLogin) {
-        console.log("User is logged in. Saving data to database...");
-        // try {
-        //   await dataBaseObj.createDocument(summary, videoTitle, thumbnailUrl, userId);
-        //   console.log("Document created successfully!");
-        // } catch (error) {
-        //   console.error("Error creating document:", error);
-        // }
+        console.log("User is logged in. Saving data to database...",userId);
+        try {
+          await dataBaseObj.createDocument(summary, videoTitle, thumbnailUrl, userId);
+          console.log("Document created successfully!");
+        } catch (error) {
+          console.error("Error creating document:", error);
+        }
       }
 
       // Navigate to summary page with data

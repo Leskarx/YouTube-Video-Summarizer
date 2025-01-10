@@ -13,7 +13,7 @@ function Summary() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <button
-        onClick={() => navigate("/")}
+        onClick={() => navigate(-1)}
         className="mb-6 text-primary-600 hover:text-primary-700 flex items-center"
       >
         ← Go Back

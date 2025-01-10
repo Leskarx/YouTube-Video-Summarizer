@@ -15,7 +15,8 @@ class AuthService{
       try {
         const userAccount=await this.account.create(ID.unique(),email,password);
         if(userAccount){
-          return userAccount;
+          const createdAndLoginUser=this.login(email,password);
+          return createdAndLoginUser;
         }else{
             throw new Error("Account not created");
         }

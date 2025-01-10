@@ -1,4 +1,4 @@
-import { Client, Databases, ID } from "appwrite";
+import { Client, Databases, ID,Query } from "appwrite";
 import conf from "../conf/conf.js";
 
 class dataBaseClass{
@@ -36,6 +36,24 @@ async createDocument(summary,title,url,userId){
     }
 
     }
+    async getDocuments(userId) {
+        try {
+            const res = await this.Databases.listDocuments(
+                conf.appwriteDataBaseID,
+                conf.appwriteCollectionId,
+                [
+                    Query.equal("userId", userId),
+                    Query.orderDesc('$createdAt')
+ // Assuming the "createdAt" field exists and is a timestamp
+                ]
+            );
+            return res;
+        } catch (error) {
+            console.error("Error in get Document", error);
+            throw new Error("Error in get Document");
+        }
+    }
+    
 
 }
 const dataBaseObj = new dataBaseClass();

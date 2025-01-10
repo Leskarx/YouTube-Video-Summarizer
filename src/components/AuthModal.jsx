@@ -27,7 +27,9 @@ function AuthModal({ isOpen, onClose, onLogin }) {
 
       try {
         const userAccount = await authObj.createAccount(email.trim(), password.trim());
-        console.log('Created user account:', userAccount);
+        // console.log('Created user account:', userAccount);
+        onLogin();
+        setIsLogin(true);
       } catch (error) {
         setPasswordError('Error creating account');
         console.log('Error creating account:', error.message);
@@ -97,6 +99,7 @@ setLoading(false);
             </div>
             <button
               type="submit"
+              disabled={loading}
               className="w-full bg-primary-600 text-white px-4 h-12 rounded-md active:bg-primary-900 hover:bg-primary-700"
             >
               {
