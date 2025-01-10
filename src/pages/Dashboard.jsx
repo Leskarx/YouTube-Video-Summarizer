@@ -17,7 +17,7 @@ function Dashboard() {
       async function fetchSummaries() {
         try {
           const { documents } = await dataBaseObj.getDocuments(user["$id"]);
-          console.log('Documents:', documents);
+          // console.log('Documents:', documents);
           setSummaries(documents);
           setLoading(false);
         } catch (error) {

@@ -39,7 +39,7 @@ function Home() {
       // Convert the URL to normal YouTube format
       const normalizedUrl = convertYouTubeUrl(url);
 
-console.log("Normalized URL:", normalizedUrl);
+// console.log("Normalized URL:", normalizedUrl);
       const { thumbnailUrl, videoTitle } = await getYouTubeThumbnailAndTitle(normalizedUrl);
 
       // Mocking a summary for now
@@ -47,10 +47,10 @@ console.log("Normalized URL:", normalizedUrl);
 
       // Save to database if logged in
       if (isLogin) {
-        console.log("User is logged in. Saving data to database...", userId);
+        // console.log("User is logged in. Saving data to database...", userId);
         try {
           await dataBaseObj.createDocument(summary, videoTitle, thumbnailUrl, userId);
-          console.log("Document created successfully!");
+          // console.log("Document created successfully!");
         } catch (error) {
           console.error("Error creating document:", error);
         }

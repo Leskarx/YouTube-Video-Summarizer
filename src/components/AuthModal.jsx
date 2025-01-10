@@ -35,7 +35,7 @@ function AuthModal({ isOpen, onClose, onLogin }) {
         navigate(0)
       } catch (error) {
         setPasswordError('Error creating account');
-        console.log('Error creating account:', error.message);
+        // console.log('Error creating account:', error.message);
         throw new Error('Account not created');
       }finally{
         setLoading(false);}
@@ -45,7 +45,7 @@ function AuthModal({ isOpen, onClose, onLogin }) {
     if (!isSignUp) {
       try {
         const userAccount = await authObj.login(email.trim(), password.trim());
-        console.log('Logged in user account:', userAccount);
+        // console.log('Logged in user account:', userAccount);
         
         onLogin();
         setIsLogin(true);

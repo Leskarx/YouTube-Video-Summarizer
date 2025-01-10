@@ -10,7 +10,7 @@ import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   const { isLogin } = useContext(MyContext);
-  console.log("...........>",isLogin);
+  // console.log("...........>",isLogin);
 
   return (
     <Router>

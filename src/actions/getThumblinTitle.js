@@ -30,8 +30,8 @@ async function getYouTubeThumbnailAndTitle(videoUrl) {
         const thumbnailUrl = thumbnails.high.url; // You can choose 'default', 'medium', 'high', 'standard', or 'maxres' based on availability
         const videoTitle = snippet.title;
 
-        console.log('Thumbnail URL:', thumbnailUrl);
-        console.log('Video Title:', videoTitle);
+        // console.log('Thumbnail URL:', thumbnailUrl);
+        // console.log('Video Title:', videoTitle);
 
         return { thumbnailUrl, videoTitle };
     } catch (error) {

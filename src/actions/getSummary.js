@@ -13,7 +13,7 @@ export async function getSummary(transcript) {
       
       try {
           const response = await axios.request(options);
-          console.log('response...........get summary:', response);
+        //   console.log('response...........get summary:', response);
           return response.data.summary;
          
       } catch  {
