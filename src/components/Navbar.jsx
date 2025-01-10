@@ -35,7 +35,7 @@ function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden sm:flex sm:items-center sm:space-x-4">
+          <div className="hidden sm:flex sm:items-center sm:space-x-6">
             <Link
               to="https://www.youtube.com"
               target="_blank"
@@ -49,13 +49,13 @@ function Navbar() {
               <>
                 <Link
                   to="/dashboard"
-                  className="text-gray-700 hover:text-primary-600"
+                  className="text-gray-700 hover:text-primary-600 border-b-2 border-transparent hover:border-primary-600 transition-all"
                 >
-                  My Summaries
+                  View Summaries
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
+                  className="bg-primary-600 text-white px-6 py-2 rounded-md hover:bg-primary-700 transition-colors"
                 >
                   Logout
                 </button>
@@ -109,14 +109,14 @@ function Navbar() {
                   className="text-gray-700 hover:text-primary-600"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  My Summaries
+                  View Summaries
                 </Link>
                 <button
                   onClick={() => {
                     handleLogout();
                     setIsMenuOpen(false);
                   }}
-                  className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
+                  className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition-colors"
                 >
                   Logout
                 </button>
@@ -124,7 +124,7 @@ function Navbar() {
             ) : (
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
+                className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition-colors"
               >
                 Login / Sign Up
               </button>
