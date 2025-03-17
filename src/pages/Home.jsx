@@ -52,7 +52,7 @@ function Home() {
         state: {
           thumbnail: thumbnailUrl,
           title: videoTitle,
-          summary: summary || "Transcript not available for this video.",
+          summary: summary || "summary not found,contact developer",  
         },
       });
     } catch (error) {

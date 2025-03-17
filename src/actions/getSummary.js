@@ -3,18 +3,18 @@ export async function getSummary(transcript) {
 
     const options = {
         method: 'POST',
-        url: 'https://n8n-dev.subspace.money/webhook/21ad7b8a-60af-4c00-9a37-b379442ebbff',
+        url: 'https://youtube-summarizer-backend-leskar.vercel.app/summary',
         
         data: {
-            transcript: transcript,
+            text: transcript,
           
         }
       };
       
       try {
           const response = await axios.request(options);
-        //   console.log('response...........get summary:', response);
-          return response.data.summary;
+          console.log('response...........get summary:', response);
+          return response.data.message;
          
       } catch  {
        throw new Error('Failed to summarize the transcript');
