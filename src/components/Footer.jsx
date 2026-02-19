@@ -8,7 +8,7 @@ function Footer() {
           <div className="text-gray-600 text-sm">
             <span>© {new Date().getFullYear()} YouTube Summarizer. All rights reserved.</span>
             <br />
-            <span className="text-gray-500">Made with ❤️ by Ankita Rai</span>
+            <span className="text-gray-500">Made with ❤️ </span>
           </div>
           <div className="flex space-x-6">
             <Link to="/about" className="text-gray-600 hover:text-primary-600 text-sm">
